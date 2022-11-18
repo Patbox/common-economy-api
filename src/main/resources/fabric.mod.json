@@ -1,0 +1,29 @@
+{
+  "schemaVersion": 1,
+  "id": "common-economy-api",
+  "version": "${version}",
+
+  "name": "Common Economy API",
+  "description": "Common API for interactions between economy related mods",
+  "authors": [
+    "Patbox"
+  ],
+  "contact": {
+    "homepage": "https://pb4.eu",
+    "sources": "https://github.com/Patbox/common-economy-api"
+  },
+  "license": "APACHE-2",
+  "icon": "assets/icon.png",
+  "environment": "*",
+  "entrypoints": {
+  },
+  "depends": {
+    "fabricloader": ">=0.7.4",
+    "minecraft": "1.19.x"
+  },
+  "custom": {
+    "modmenu": {
+      "badges": [ "library" ]
+    }
+  }
+}
