@@ -5,6 +5,8 @@ import eu.pb4.common.economy.api.EconomyAccount;
 import eu.pb4.common.economy.api.EconomyCurrency;
 import eu.pb4.common.economy.api.EconomyProvider;
 import net.minecraft.server.MinecraftServer;
+import net.minecraft.text.Style;
+import net.minecraft.util.Formatting;
 import net.minecraft.util.Identifier;
 import org.jetbrains.annotations.ApiStatus;
 
@@ -16,6 +18,8 @@ public final class EconomyImpl {
     private static final Map<String, EconomyProvider> PROVIDERS_BY_ID = new HashMap<>();
     private static final Map<EconomyProvider, String> ID_BY_PROVIDERS = new HashMap<>();
     private static final Set<EconomyProvider> PROVIDERS = new HashSet<>();
+
+    public static final Style WHITE_NON_ITALIC_STYLE = Style.EMPTY.withFormatting(Formatting.WHITE).withItalic(false);
 
     public static String getId(EconomyProvider provider) {
         return ID_BY_PROVIDERS.get(provider);
