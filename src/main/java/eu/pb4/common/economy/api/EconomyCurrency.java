@@ -1,5 +1,6 @@
 package eu.pb4.common.economy.api;
 
+import eu.pb4.common.economy.impl.EconomyImpl;
 import net.minecraft.item.ItemStack;
 import net.minecraft.item.Items;
 import net.minecraft.text.Text;
@@ -21,6 +22,16 @@ public interface EconomyCurrency {
 
     default Text formatValueText(long value, boolean precise) {
         return Text.literal(this.formatValue(value, precise));
+    }
+
+    default ItemStack formatValueStack(long value) {
+        var stack = this.icon();
+
+        stack.setCustomName(this.formatValueText(value, false)
+            .copy()
+            .styled(s -> s.withParent(EconomyImpl.WHITE_NON_ITALIC_STYLE)));
+
+        return stack;
     }
 
     /**
