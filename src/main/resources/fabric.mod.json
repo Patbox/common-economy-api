@@ -18,8 +18,8 @@
   "entrypoints": {
   },
   "depends": {
-    "fabricloader": ">=0.7.4",
-    "minecraft": "1.19.x"
+    "fabricloader": ">=0.14",
+    "minecraft": ">=1.19"
   },
   "custom": {
     "modmenu": {
