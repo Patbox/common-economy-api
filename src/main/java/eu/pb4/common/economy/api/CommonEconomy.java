@@ -38,8 +38,8 @@ public final class CommonEconomy {
     }
 
     @Nullable
-    public static EconomyCurrency getCurrency(MinecraftServer server, Identifier account) {
-        return EconomyImpl.getCurrency(server, account);
+    public static EconomyCurrency getCurrency(MinecraftServer server, Identifier currency) {
+        return EconomyImpl.getCurrency(server, currency);
     }
 
     public static Collection<EconomyCurrency> getCurrencies(MinecraftServer server) {

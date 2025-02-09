@@ -55,11 +55,11 @@ public final class EconomyImpl {
         return list;
     }
 
-    public static EconomyCurrency getCurrency(MinecraftServer server, Identifier account) {
-        EconomyProvider provider = getProvider(account.getNamespace());
+    public static EconomyCurrency getCurrency(MinecraftServer server, Identifier currency) {
+        EconomyProvider provider = getProvider(currency.getNamespace());
 
         if (provider != null) {
-            return provider.getCurrency(server, account.getPath());
+            return provider.getCurrency(server, currency.getPath());
         }
 
         return null;
