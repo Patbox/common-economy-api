@@ -1,6 +1,7 @@
 package eu.pb4.common.economy.api;
 
 import eu.pb4.common.economy.impl.EconomyImpl;
+import net.minecraft.component.DataComponentTypes;
 import net.minecraft.item.ItemStack;
 import net.minecraft.item.Items;
 import net.minecraft.text.Text;
@@ -25,9 +26,8 @@ public interface EconomyCurrency {
     }
 
     default ItemStack formatValueStack(long value) {
-        var stack = this.icon();
-
-        stack.setCustomName(this.formatValueText(value, false)
+        var stack = this.icon().copy();
+        stack.set(DataComponentTypes.CUSTOM_NAME, this.formatValueText(value, false)
             .copy()
             .styled(s -> s.withParent(EconomyImpl.WHITE_NON_ITALIC_STYLE)));
 

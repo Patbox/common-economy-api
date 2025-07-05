@@ -29,7 +29,7 @@ public interface EconomyProvider {
      */
     @Nullable
     default EconomyAccount getAccount(ServerPlayerEntity player, String account) {
-        return this.getAccount(player.server, player.getGameProfile(), account);
+        return this.getAccount(player.getServer(), player.getGameProfile(), account);
     }
 
     /**
@@ -50,7 +50,7 @@ public interface EconomyProvider {
      * @return Collection of accounts
      */
     default Collection<EconomyAccount> getAccounts(ServerPlayerEntity player) {
-        return this.getAccounts(player.server, player.getGameProfile());
+        return this.getAccounts(player.getServer(), player.getGameProfile());
     }
 
     /**
@@ -69,7 +69,7 @@ public interface EconomyProvider {
      * @return Collection of accounts
      */
     default Collection<EconomyAccount> getAccounts(ServerPlayerEntity player, EconomyCurrency currency) {
-        return this.getAccounts(player.server, player.getGameProfile(), currency);
+        return this.getAccounts(player.getServer(), player.getGameProfile(), currency);
     }
 
     /**
@@ -114,7 +114,7 @@ public interface EconomyProvider {
      */
     @Nullable
     default String defaultAccount(ServerPlayerEntity player, EconomyCurrency currency) {
-        return defaultAccount(player.server, player.getGameProfile(), currency);
+        return defaultAccount(player.getServer(), player.getGameProfile(), currency);
     }
 
     /**
