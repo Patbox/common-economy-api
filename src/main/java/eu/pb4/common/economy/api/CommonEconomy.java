@@ -13,7 +13,7 @@ import java.util.Collection;
 public final class CommonEconomy {
     @Nullable
     public static EconomyAccount getAccount(ServerPlayerEntity player, Identifier account) {
-        return getAccount(player.getServer(), player.getGameProfile(), account);
+        return getAccount(player.getCommandSource().getServer(), player.getGameProfile(), account);
     }
 
     @Nullable
@@ -22,7 +22,7 @@ public final class CommonEconomy {
     }
 
     public static Collection<EconomyAccount> getAccounts(ServerPlayerEntity player) {
-        return getAccounts(player.getServer(), player.getGameProfile());
+        return getAccounts(player.getCommandSource().getServer(), player.getGameProfile());
     }
 
     public static Collection<EconomyAccount> getAccounts(MinecraftServer server, GameProfile profile) {
@@ -30,7 +30,7 @@ public final class CommonEconomy {
     }
 
     public static Collection<EconomyAccount> getAccounts(ServerPlayerEntity player, EconomyCurrency currency) {
-        return getAccounts(player.getServer(), player.getGameProfile(), currency);
+        return getAccounts(player.getCommandSource().getServer(), player.getGameProfile(), currency);
     }
 
     public static Collection<EconomyAccount> getAccounts(MinecraftServer server, GameProfile profile, EconomyCurrency currency) {
