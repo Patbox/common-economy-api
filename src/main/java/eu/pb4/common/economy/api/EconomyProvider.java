@@ -2,11 +2,12 @@ package eu.pb4.common.economy.api;
 
 import com.mojang.authlib.GameProfile;
 import eu.pb4.common.economy.impl.EconomyImpl;
-import net.minecraft.item.ItemStack;
-import net.minecraft.item.Items;
+import net.minecraft.network.chat.Component;
 import net.minecraft.server.MinecraftServer;
-import net.minecraft.server.network.ServerPlayerEntity;
-import net.minecraft.text.Text;
+import net.minecraft.server.level.ServerPlayer;
+import net.minecraft.world.item.ItemStack;
+import net.minecraft.world.item.ItemStackTemplate;
+import net.minecraft.world.item.Items;
 import org.jetbrains.annotations.Nullable;
 
 import java.util.ArrayList;
@@ -18,7 +19,7 @@ public interface EconomyProvider {
     /**
      * Providers name
      */
-    Text name();
+    Component name();
 
     /**
      * Gets account controlled by player following id
@@ -28,8 +29,8 @@ public interface EconomyProvider {
      * @return EconomyAccount or null
      */
     @Nullable
-    default EconomyAccount getAccount(ServerPlayerEntity player, String account) {
-        return this.getAccount(player.getCommandSource().getServer(), player.getGameProfile(), account);
+    default EconomyAccount getAccount(ServerPlayer player, String account) {
+        return this.getAccount(player.level().getServer(), player.getGameProfile(), account);
     }
 
     /**
@@ -49,8 +50,8 @@ public interface EconomyProvider {
      * @param player
      * @return Collection of accounts
      */
-    default Collection<EconomyAccount> getAccounts(ServerPlayerEntity player) {
-        return this.getAccounts(player.getCommandSource().getServer(), player.getGameProfile());
+    default Collection<EconomyAccount> getAccounts(ServerPlayer player) {
+        return this.getAccounts(player.level().getServer(), player.getGameProfile());
     }
 
     /**
@@ -68,8 +69,8 @@ public interface EconomyProvider {
      * @param currency Accounts currency
      * @return Collection of accounts
      */
-    default Collection<EconomyAccount> getAccounts(ServerPlayerEntity player, EconomyCurrency currency) {
-        return this.getAccounts(player.getCommandSource().getServer(), player.getGameProfile(), currency);
+    default Collection<EconomyAccount> getAccounts(ServerPlayer player, EconomyCurrency currency) {
+        return this.getAccounts(player.level().getServer(), player.getGameProfile(), currency);
     }
 
     /**
@@ -113,8 +114,8 @@ public interface EconomyProvider {
      * @return id of default account
      */
     @Nullable
-    default String defaultAccount(ServerPlayerEntity player, EconomyCurrency currency) {
-        return defaultAccount(player.getCommandSource().getServer(), player.getGameProfile(), currency);
+    default String defaultAccount(ServerPlayer player, EconomyCurrency currency) {
+        return defaultAccount(player.level().getServer(), player.getGameProfile(), currency);
     }
 
     /**
@@ -129,7 +130,7 @@ public interface EconomyProvider {
      * @return id of default account
      */
     @Nullable
-    default EconomyAccount getDefaultAccount(ServerPlayerEntity player, EconomyCurrency currency) {
+    default EconomyAccount getDefaultAccount(ServerPlayer player, EconomyCurrency currency) {
         var id = defaultAccount(player, currency);
         return  id != null ? this.getAccount(player, id) : null;
     }
@@ -149,7 +150,7 @@ public interface EconomyProvider {
      * @return
      */
     default ItemStack icon() {
-        return Items.SUNFLOWER.getDefaultStack();
+        return Items.SUNFLOWER.getDefaultInstance();
     }
 
     /**

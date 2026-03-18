@@ -29,8 +29,5 @@ For list of version names, you can check [maven](https://maven.nucleoid.xyz/eu/p
 
 To check, you just need to call static methods in `eu.pb4.common.economy.api.CommonEconomy` class.
 
-Claim mods need to create a object extending `eu.pb4.common.protection.api.ProtectionProvider`
-and register it with `CommonProtection.register(Identifier, ProtectionProvider)`
-
 
 

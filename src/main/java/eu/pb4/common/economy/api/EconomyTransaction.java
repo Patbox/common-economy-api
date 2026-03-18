@@ -1,6 +1,9 @@
 package eu.pb4.common.economy.api;
 
-import net.minecraft.text.Text;
+
+import net.minecraft.network.chat.Component;
+
+import java.math.BigInteger;
 
 @SuppressWarnings({"unused"})
 public interface EconomyTransaction {
@@ -13,31 +16,31 @@ public interface EconomyTransaction {
     /**
      * Player-facing message in case of a failure/success of operation
      */
-    Text message();
+    Component message();
 
     /**
      * Final balance for transaction. Equal to previousBalance in case of failure
      */
-    long finalBalance();
+    BigInteger finalBalance();
 
-    long previousBalance();
+    BigInteger previousBalance();
 
     /**
      * Amount of money in transaction. Should be negative if money is removed
      */
-    long transactionAmount();
+    BigInteger transactionAmount();
 
     EconomyAccount account();
 
-    record Simple(boolean isSuccessful, Text message, long finalBalance, long previousBalance, long transactionAmount, EconomyAccount account) implements EconomyTransaction {
-        public EconomyTransaction failure(Text message, long balance, long transactionAmount, EconomyAccount account) {
+    record Simple(boolean isSuccessful, Component message, BigInteger finalBalance, BigInteger previousBalance, BigInteger transactionAmount, EconomyAccount account) implements EconomyTransaction {
+        public EconomyTransaction failure(Component message, BigInteger balance, BigInteger transactionAmount, EconomyAccount account) {
             return new Simple(false, message, balance, balance, transactionAmount, account);
         }
 
-        public EconomyTransaction success(Text message, long previousBalance, long transactionAmount, EconomyAccount account) {
-            return success(message, previousBalance + transactionAmount, previousBalance, transactionAmount, account);
+        public EconomyTransaction success(Component message, BigInteger previousBalance, BigInteger transactionAmount, EconomyAccount account) {
+            return success(message, previousBalance.add(transactionAmount), previousBalance, transactionAmount, account);
         }
-        public EconomyTransaction success(Text message, long finalBalance, long previousBalance, long transactionAmount, EconomyAccount account) {
+        public EconomyTransaction success(Component message, BigInteger finalBalance, BigInteger previousBalance, BigInteger transactionAmount, EconomyAccount account) {
             return new Simple(true, message, finalBalance, previousBalance, transactionAmount, account);
         }
     }

@@ -2,9 +2,9 @@ package eu.pb4.common.economy.api;
 
 import com.mojang.authlib.GameProfile;
 import eu.pb4.common.economy.impl.EconomyImpl;
+import net.minecraft.resources.Identifier;
 import net.minecraft.server.MinecraftServer;
-import net.minecraft.server.network.ServerPlayerEntity;
-import net.minecraft.util.Identifier;
+import net.minecraft.server.level.ServerPlayer;
 import org.jetbrains.annotations.Nullable;
 
 import java.util.Collection;
@@ -12,8 +12,8 @@ import java.util.Collection;
 @SuppressWarnings({"unused"})
 public final class CommonEconomy {
     @Nullable
-    public static EconomyAccount getAccount(ServerPlayerEntity player, Identifier account) {
-        return getAccount(player.getCommandSource().getServer(), player.getGameProfile(), account);
+    public static EconomyAccount getAccount(ServerPlayer player, Identifier account) {
+        return getAccount(player.level().getServer(), player.getGameProfile(), account);
     }
 
     @Nullable
@@ -21,16 +21,16 @@ public final class CommonEconomy {
         return EconomyImpl.get(server, profile, account);
     }
 
-    public static Collection<EconomyAccount> getAccounts(ServerPlayerEntity player) {
-        return getAccounts(player.getCommandSource().getServer(), player.getGameProfile());
+    public static Collection<EconomyAccount> getAccounts(ServerPlayer player) {
+        return getAccounts(player.level().getServer(), player.getGameProfile());
     }
 
     public static Collection<EconomyAccount> getAccounts(MinecraftServer server, GameProfile profile) {
         return EconomyImpl.getAll(server, profile);
     }
 
-    public static Collection<EconomyAccount> getAccounts(ServerPlayerEntity player, EconomyCurrency currency) {
-        return getAccounts(player.getCommandSource().getServer(), player.getGameProfile(), currency);
+    public static Collection<EconomyAccount> getAccounts(ServerPlayer player, EconomyCurrency currency) {
+        return getAccounts(player.level().getServer(), player.getGameProfile(), currency);
     }
 
     public static Collection<EconomyAccount> getAccounts(MinecraftServer server, GameProfile profile, EconomyCurrency currency) {

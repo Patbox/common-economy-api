@@ -1,11 +1,13 @@
 package eu.pb4.common.economy.api;
 
 import eu.pb4.common.economy.impl.EconomyImpl;
-import net.minecraft.component.DataComponentTypes;
-import net.minecraft.item.ItemStack;
-import net.minecraft.item.Items;
-import net.minecraft.text.Text;
-import net.minecraft.util.Identifier;
+import net.minecraft.core.component.DataComponents;
+import net.minecraft.network.chat.Component;
+import net.minecraft.resources.Identifier;
+import net.minecraft.world.item.ItemStack;
+import net.minecraft.world.item.Items;
+
+import java.math.BigInteger;
 
 /**
  * A currency of a mod
@@ -14,24 +16,32 @@ public interface EconomyCurrency {
     /**
      * Currency's name, used by mods for display information
      */
-    Text name();
+    Component name();
 
     /**
      * Identifier allowing you to get this instance. namespace should be equal to Provider's id.
      */
     Identifier id();
 
-    default Text formatValueText(long value, boolean precise) {
-        return Text.literal(this.formatValue(value, precise));
+    default Component formatValueComponent(BigInteger value, boolean precise) {
+        return Component.literal(this.formatValue(value, precise));
+    }
+
+    default ItemStack formatValueStack(BigInteger value) {
+        var stack = this.icon().copy();
+        stack.set(DataComponents.CUSTOM_NAME, this.formatValueComponent(value, false)
+            .copy()
+            .withStyle(s -> s.applyTo(EconomyImpl.WHITE_NON_ITALIC_STYLE)));
+
+        return stack;
+    }
+
+    default Component formatValueComponent(long value, boolean precise) {
+        return formatValueComponent(BigInteger.valueOf(value), precise);
     }
 
     default ItemStack formatValueStack(long value) {
-        var stack = this.icon().copy();
-        stack.set(DataComponentTypes.CUSTOM_NAME, this.formatValueText(value, false)
-            .copy()
-            .styled(s -> s.withParent(EconomyImpl.WHITE_NON_ITALIC_STYLE)));
-
-        return stack;
+        return formatValueStack(BigInteger.valueOf(value));
     }
 
     /**
@@ -41,7 +51,11 @@ public interface EconomyCurrency {
      * @param precise whatever it should be precise (down to lowest values)
      * @return balance formatted as string
      */
-    String formatValue(long value, boolean precise);
+    String formatValue(BigInteger value, boolean precise);
+
+    default String formatValue(long value, boolean precise) {
+        return formatValue(BigInteger.valueOf(value), precise);
+    }
 
     /**
      * Parses string input to raw value.
@@ -51,7 +65,7 @@ public interface EconomyCurrency {
      * @return raw amount
      * @throws NumberFormatException
      */
-    long parseValue(String value) throws NumberFormatException;
+    BigInteger parseValue(String value) throws NumberFormatException;
 
     /**
      * Provider managing this currency
@@ -62,6 +76,6 @@ public interface EconomyCurrency {
      * Icons for other mods to use in guis
      */
     default ItemStack icon() {
-        return Items.SUNFLOWER.getDefaultStack();
+        return Items.SUNFLOWER.getDefaultInstance();
     }
 }
