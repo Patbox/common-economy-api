@@ -33,14 +33,14 @@ public interface EconomyTransaction {
     EconomyAccount account();
 
     record Simple(boolean isSuccessful, Component message, BigInteger finalBalance, BigInteger previousBalance, BigInteger transactionAmount, EconomyAccount account) implements EconomyTransaction {
-        public EconomyTransaction failure(Component message, BigInteger balance, BigInteger transactionAmount, EconomyAccount account) {
+        public static EconomyTransaction failure(Component message, BigInteger balance, BigInteger transactionAmount, EconomyAccount account) {
             return new Simple(false, message, balance, balance, transactionAmount, account);
         }
 
-        public EconomyTransaction success(Component message, BigInteger previousBalance, BigInteger transactionAmount, EconomyAccount account) {
+        public static EconomyTransaction success(Component message, BigInteger previousBalance, BigInteger transactionAmount, EconomyAccount account) {
             return success(message, previousBalance.add(transactionAmount), previousBalance, transactionAmount, account);
         }
-        public EconomyTransaction success(Component message, BigInteger finalBalance, BigInteger previousBalance, BigInteger transactionAmount, EconomyAccount account) {
+        public static EconomyTransaction success(Component message, BigInteger finalBalance, BigInteger previousBalance, BigInteger transactionAmount, EconomyAccount account) {
             return new Simple(true, message, finalBalance, previousBalance, transactionAmount, account);
         }
     }
