@@ -5,6 +5,7 @@ import net.minecraft.network.chat.Component;
 
 import java.math.BigInteger;
 
+/// A change in an [EconomyAccount]'s balance. A transaction MAY NOT be partially successful.
 @SuppressWarnings({"unused"})
 public interface EconomyTransaction {
     boolean isSuccessful();
@@ -13,21 +14,21 @@ public interface EconomyTransaction {
         return !this.isSuccessful();
     }
 
-    /**
-     * Player-facing message in case of a failure/success of operation
-     */
+    /// Player-facing message describing the failure or success of the transaction.
+    ///
+    /// For example, "Transaction failed!", "Failed: Account does not have enough currency", "Success!", or
+    /// "Successfully added $amount to $account!"
     Component message();
 
-    /**
-     * Final balance for transaction. Equal to previousBalance in case of failure
-     */
+    /// Account balance after this transaction. In case of failure, [#finalBalance] MUST equal [#previousBalance].
     BigInteger finalBalance();
 
+    /// Account balance before this transaction.
     BigInteger previousBalance();
 
-    /**
-     * Amount of money in transaction. Should be negative if money is removed
-     */
+    /// Value of transaction. MUST be negative if transaction represents value being removed.
+    ///
+    /// MUST be the same regardless of success.
     BigInteger transactionAmount();
 
     EconomyAccount account();
