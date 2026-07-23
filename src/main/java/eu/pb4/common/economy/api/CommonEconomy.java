@@ -54,6 +54,10 @@ public final class CommonEconomy {
         return EconomyImpl.providers();
     }
 
+    /// @param providerId MUST be unique across mods.
+    ///                   Consider using your mod's id (or a variant, if you need more providers).
+    ///
+    ///                   MUST be a valid [Identifier] namespace.
     public static <T extends EconomyProvider> T register(String providerId, T provider) {
         EconomyImpl.register(providerId, provider);
         return provider;
