@@ -9,24 +9,21 @@ import net.minecraft.world.item.Items;
 
 import java.math.BigInteger;
 
-/**
- * A currency of a mod
- */
+/// A currency. Held by owners in [EconomyAccount]s. MUST be a singleton.
+@SuppressWarnings("unused")
 public interface EconomyCurrency {
-    /**
-     * Currency's name, used by mods for display information
-     */
+    /// Currency's name, SHOULD be used by mods for display information.
     Component name();
 
-    /**
-     * Identifier allowing you to get this instance. namespace should be equal to Provider's id.
-     */
+    /// Identifier of this currency. Namespace MUST be equal to provider's namespace.
     Identifier id();
 
     default Component formatValueComponent(BigInteger value, boolean precise) {
         return Component.literal(this.formatValue(value, precise));
     }
 
+    /// Creates an [ItemStack] displaying given amount of this currency.
+    /// The returned stack MUST NOT have any redeemable value, though the caller MAY give it value.
     default ItemStack formatValueStack(BigInteger value) {
         var stack = this.icon().copy();
         stack.set(DataComponents.CUSTOM_NAME, this.formatValueComponent(value, false)
@@ -44,37 +41,26 @@ public interface EconomyCurrency {
         return formatValueStack(BigInteger.valueOf(value));
     }
 
-    /**
-     * Formats value for display/config storage
-     *
-     * @param value raw value
-     * @param precise whatever it should be precise (down to lowest values)
-     * @return balance formatted as string
-     */
+    /// Formats value for display or config storage. MUST NOT include currency name. For example, return "10" instead of
+    /// "10 points".
+    /// If `precise`, the returned String MUST be precise to the smallest fraction.
     String formatValue(BigInteger value, boolean precise);
 
     default String formatValue(long value, boolean precise) {
         return formatValue(BigInteger.valueOf(value), precise);
     }
 
-    /**
-     * Parses string input to raw value.
-     * This method should be able to parse output of formatValue with precise = true
-     *
-     * @param value String value
-     * @return raw amount
-     * @throws NumberFormatException
-     */
+    /// Parses string input to raw value. MUST be the reverse of [#formatValue(BigInteger, boolean)] where
+    /// `precise = true`. In other words, `parseValue(formatValue(value, true))` MUST equal `value`.
+    ///
+    /// @param value String value
+    /// @return raw amount
     BigInteger parseValue(String value) throws NumberFormatException;
 
-    /**
-     * Provider managing this currency
-     */
+    /// Provider managing this currency.
     EconomyProvider provider();
 
-    /**
-     * Icons for other mods to use in guis
-     */
+    /// Icons that other mods SHOULD use in GUIs.
     default ItemStack icon() {
         return Items.SUNFLOWER.getDefaultInstance();
     }
